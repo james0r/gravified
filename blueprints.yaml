@@ -3,7 +3,7 @@ slug: gravified
 type: plugin
 version: 0.1.0
 description: Some customizations to GravCMS
-icon: plug
+icon: battery
 author:
   name: James Auble
   email: james.auble@gmail.com
