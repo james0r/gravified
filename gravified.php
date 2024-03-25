@@ -47,6 +47,10 @@ class GravifiedPlugin extends Plugin {
       return;
     }
 
+    // $uri = new Uri($this->grav);
+
+    // dd($uri->base());
+
     // Enable the main events we are interested in
     $this->enable(
       [

@@ -22,7 +22,8 @@
         "template": module.template|hyphenize,
         "title" : module.title,
         "content" : module.content,
-        "featuredImage" : module.media|first.url()|e,
+        "featuredImage" : base_url_absolute ~ module.media|first.url|e,
+        "header": module.header
     }]) %}
 {% endfor %}
 
