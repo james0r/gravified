@@ -30,7 +30,16 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    text_var:
+    require_auth:
+      type: toggle
+      label: "Require Authentication"
+      help: "JSON requests must include an auth key"
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+    auth_secret_key:
       type: text
-      label: PLUGIN_GRAVIFIED.TEXT_VARIABLE
-      help: PLUGIN_GRAVIFIED.TEXT_VARIABLE_HELP
+      label: "Auth Secret Key"
+      help: "A secret key for authenticated requests"

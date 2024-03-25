@@ -1,0 +1,32 @@
+{% set result = [] %}
+
+{# {% for type, directory in directories %}
+    {%- set title = options.directories[type]['title'] ?? options.directories[type]['collection']['title'] ?? directory.title -%}
+    {%- if title matches '/\{/' -%}
+        {%- set title = include(template_from_string(title, 'collection title template'))|trim -%}
+    {%- endif -%}
+    {%- set description = options.directories[type]['description'] ?? options.directories[type]['collection']['description'] ?? directory.description -%}
+
+    {% set result = result|merge([{
+        "type" : type,
+        "title" : title,
+        "description" : description,
+        "url" : url(directory_url ~ '/directory:' ~ type)
+    }]) %}
+{% endfor %} #}
+
+{# {"directories":{{ json_encode(result)|raw }}} #}
+
+{% for module in page.children %}
+    {% set result = result|merge([{
+        "template": module.template|hyphenize,
+        "title" : module.title,
+        "content" : module.content,
+        "featuredImage" : module.media|first.url()|e,
+    }]) %}
+{% endfor %}
+
+{% spaceless %}
+  {"modules":{{ json_encode(result)|raw }}}
+{% endspaceless %}
+

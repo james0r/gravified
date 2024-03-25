@@ -3,7 +3,13 @@
 namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
+use Grav\Common\Uri;
+use Grav\Common\Flex;
+use Grav\Common\Grav;
+use Grav\Common\Utils;
 use Grav\Common\Plugin;
+
+use Grav\Plugin\Gravified\Utils as GravifiedUtils;
 
 /**
  * Class GravifiedPlugin
@@ -27,21 +33,9 @@ class GravifiedPlugin extends Plugin {
    */
   public static function getSubscribedEvents(): array {
     return [
-      'onPluginsInitialized' => [
-        // Uncomment following line when plugin requires Grav < 1.7
-        // ['autoload', 100000],
-        ['onPluginsInitialized', 0]
-      ]
+      'onPluginsInitialized' => ['onPluginsInitialized', 0],
+      'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
     ];
-  }
-
-  /**
-   * Composer autoload
-   *
-   * @return ClassLoader
-   */
-  public function autoload(): ClassLoader {
-    return require __DIR__ . '/vendor/autoload.php';
   }
 
   /**
@@ -54,8 +48,40 @@ class GravifiedPlugin extends Plugin {
     }
 
     // Enable the main events we are interested in
-    $this->enable([
-      // Put your main events here
-    ]);
+    $this->enable(
+      [
+        'onTwigTemplatePaths' => ['onTwigTemplatePaths', 1000],
+      ]
+    );
+  }
+
+  /**
+   * @return ClassLoader
+   */
+  public function autoload(): ClassLoader {
+    return require __DIR__ . '/vendor/autoload.php';
+  }
+
+  /**
+   * Register templates
+   *
+   * @return void
+   */
+  public function onTwigTemplatePaths() {
+    $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
+  }
+
+  /**
+   * Adds the 'gravified_utils' variable to the Twig site variables.
+   *
+   * This method is called when Twig site variables are being set.
+   * It adds a new instance of the GravifiedUtils class to the 'gravified_utils' variable in the Twig environment.
+   *
+   * @return void
+   */
+  public function onTwigSiteVariables() {
+    $twig = $this->grav['twig'];
+
+    $twig->twig_vars['gravified_utils'] = new GravifiedUtils;
   }
 }
